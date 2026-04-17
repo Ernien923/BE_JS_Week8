@@ -2,8 +2,18 @@
 // 訂單服務
 // ========================================
 
-const { createOrder, fetchOrders, updateOrderStatus, deleteOrder } = require('../api');
-const { validateOrderUser, formatDate, getDaysAgo, formatCurrency } = require('../utils');
+const {
+  createOrder,
+  fetchOrders,
+  updateOrderStatus,
+  deleteOrder,
+} = require("../api");
+const {
+  validateOrderUser,
+  formatDate,
+  getDaysAgo,
+  formatCurrency,
+} = require("../utils");
 
 /**
  * 建立新訂單
@@ -15,6 +25,16 @@ async function placeOrder(userInfo) {
   // 提示：先用 utils validateOrderUser() 驗證使用者資料，驗證失敗時回傳 { success: false, errors: [...] }
   // 驗證通過後，呼叫 createOrder() 建立訂單
   // 使用 try/catch 處理錯誤，回傳格式：{ success: true, data: ... } / { success: false, errors: [...] }
+  const { errors } = validateOrderUser(userInfo);
+  if (errors !== 0) {
+    return { success: false, errors: check.error };
+  }
+  try {
+    const response = await createOrder(userInfo);
+    return { success: true, data: response.data };
+  } catch (error) {
+    return { success: false, errors: errors };
+  }
 }
 
 /**
@@ -24,6 +44,12 @@ async function placeOrder(userInfo) {
 async function getOrders() {
   // 請實作此函式
   // 提示：呼叫 fetchOrders() 取得訂單陣列並回傳
+  try {
+    const response = await fetchOrders();
+    return { success: true, data: response.data.orders };
+  } catch (error) {
+    return { success: false, errors: error };
+  }
 }
 
 /**
@@ -85,6 +111,17 @@ async function removeOrder(orderId) {
  */
 function formatOrder(order) {
   // 請實作此函式
+  return {
+    id: order.id,
+    user: order.user,
+    products: order.products,
+    total: order.total,
+    totalFormatted: formatCurrency(order.total),
+    paid: order.paid,
+    paidText: order.paid ? "已付款" : "未付款",
+    createdAt: order.createdAt,
+    daysAgo: getDaysAgo(order.createdAt),
+  };
 }
 
 /**
@@ -123,5 +160,5 @@ module.exports = {
   updatePaymentStatus,
   removeOrder,
   formatOrder,
-  displayOrders
+  displayOrders,
 };
