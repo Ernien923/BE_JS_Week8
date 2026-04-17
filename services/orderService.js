@@ -46,7 +46,7 @@ async function getOrders() {
   // 提示：呼叫 fetchOrders() 取得訂單陣列並回傳
   try {
     const response = await fetchOrders();
-    return { success: true, data: response.data.orders };
+    return response;
   } catch (error) {
     return { success: false, errors: error };
   }
@@ -59,6 +59,12 @@ async function getOrders() {
 async function getUnpaidOrders() {
   // 請實作此函式
   // 提示：呼叫 fetchOrders() 後，篩選出 paid 為 false 的訂單
+  try {
+    const response = await fetchOrders();
+    return response.filter((order) => order.paid === false);
+  } catch (error) {
+    return { success: false, errors: error };
+  }
 }
 
 /**
@@ -68,6 +74,12 @@ async function getUnpaidOrders() {
 async function getPaidOrders() {
   // 請實作此函式
   // 提示：呼叫 fetchOrders() 後，篩選出 paid 為 true 的訂單
+  try {
+    const response = await fetchOrders();
+    return response.filter((order) => order.paid === true);
+  } catch (error) {
+    return { success: false, errors: error };
+  }
 }
 
 /**
@@ -80,6 +92,12 @@ async function updatePaymentStatus(orderId, isPaid) {
   // 請實作此函式
   // 提示：呼叫 updateOrderStatus()，使用 try/catch 處理錯誤
   // 回傳格式：{ success: true, data: ... } / { success: false, error: ... }
+  try {
+    const response = await updateOrderStatus(orderId, isPaid);
+    return { success: true, data: response };
+  } catch (error) {
+    return { success: false, error: error };
+  }
 }
 
 /**
@@ -91,6 +109,12 @@ async function removeOrder(orderId) {
   // 請實作此函式
   // 提示：呼叫 deleteOrder()，使用 try/catch 處理錯誤
   // 回傳格式：{ success: true, data: ... } / { success: false, error: ... }
+  try {
+    const response = await deleteOrder(orderId);
+    return { success: true, data: response };
+  } catch (error) {
+    return { success: false, error: error };
+  }
 }
 
 /**
