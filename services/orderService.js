@@ -26,12 +26,12 @@ async function placeOrder(userInfo) {
   // 驗證通過後，呼叫 createOrder() 建立訂單
   // 使用 try/catch 處理錯誤，回傳格式：{ success: true, data: ... } / { success: false, errors: [...] }
   const { errors } = validateOrderUser(userInfo);
-  if (errors !== 0) {
-    return { success: false, errors: check.error };
+  if (errors.length !== 0) {
+    return { success: false, errors: errors };
   }
   try {
     const response = await createOrder(userInfo);
-    return { success: true, data: response.data };
+    return { success: true, data: response };
   } catch (error) {
     return { success: false, errors: errors };
   }
@@ -119,7 +119,7 @@ function formatOrder(order) {
     totalFormatted: formatCurrency(order.total),
     paid: order.paid,
     paidText: order.paid ? "已付款" : "未付款",
-    createdAt: order.createdAt,
+    createdAt: formatDate(order.createdAt),
     daysAgo: getDaysAgo(order.createdAt),
   };
 }

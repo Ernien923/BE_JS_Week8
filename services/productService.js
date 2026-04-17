@@ -56,7 +56,8 @@ async function getProductById(productId) {
   // 若找不到，回傳 null
   try {
     const response = await fetchProducts();
-    return response.filter((product) => product.id === productId);
+    // const result = response.find((product) => product.id === productId);
+    return response.find((product) => product.id === productId) || null;
   } catch (error) {
     console.error("產品搜尋失敗", error.message);
   }
@@ -94,6 +95,14 @@ function displayProducts(products) {
   //    原價：NT$ 1,000
   //    售價：NT$ 800 (8折)
   // ----------------------------------------
+  return products.forEach((product) => {
+    return {
+      產品名稱: product.title,
+      分類: product.category,
+      原價: `NT$${formatCurrency(product.origin_price)}`,
+      售價: `NT$${product.price} (${getDiscountRate(product)})`,
+    };
+  });
 }
 
 module.exports = {

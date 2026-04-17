@@ -5,6 +5,9 @@
 const axios = require("axios");
 const { API_PATH, BASE_URL, ADMIN_TOKEN } = require("./config");
 
+//管理員 token
+const headers = { authorization: ADMIN_TOKEN };
+
 // ========== 客戶端 API ==========
 
 /**
@@ -162,7 +165,6 @@ async function fetchOrders() {
   // 請實作此函式
   try {
     const adminGetOrderUrl = `${BASE_URL}/api/livejs/v1/admin/${API_PATH}/orders`;
-    const headers = { authorization: ADMIN_TOKEN };
     const response = await axios.get(adminGetOrderUrl, {
       headers: headers,
     });
@@ -182,7 +184,6 @@ async function updateOrderStatus(orderId, isPaid) {
   // 請實作此函式
   try {
     const adminGetOrderUrl = `${BASE_URL}/api/livejs/v1/admin/${API_PATH}/orders`;
-    const headers = { authorization: ADMIN_TOKEN };
     const data = {
       id: orderId,
       paid: isPaid,
@@ -204,6 +205,15 @@ async function updateOrderStatus(orderId, isPaid) {
  */
 async function deleteOrder(orderId) {
   // 請實作此函式
+  try {
+    const adminDeleteOrderItem = `${BASE_URL}/api/livejs/v1/customer/${API_PATH}/carts/${orderId}`;
+    const response = await axios.delete(adminDeleteOrderItem, {
+      headers: headers,
+    });
+    return response;
+  } catch (error) {
+    console.error("刪除訂單失敗", error.message);
+  }
 }
 
 module.exports = {
