@@ -206,11 +206,11 @@ async function updateOrderStatus(orderId, isPaid) {
 async function deleteOrder(orderId) {
   // 請實作此函式
   try {
-    const adminDeleteOrderItem = `${BASE_URL}/api/livejs/v1/customer/${API_PATH}/carts/${orderId}`;
+    const adminDeleteOrderItem = `${BASE_URL}/api/livejs/v1/admin/${API_PATH}/orders/${orderId}`;
     const response = await axios.delete(adminDeleteOrderItem, {
       headers: headers,
     });
-    return response;
+    return response.data;
   } catch (error) {
     console.error("刪除訂單失敗", error.message);
   }
