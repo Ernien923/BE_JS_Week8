@@ -174,6 +174,20 @@ function displayOrders(orders) {
   // 商品明細：
   //   - 產品名稱 x 2（產品數量）
   // ========================================
+  return orders.length === 0
+    ? "沒有訂單"
+    : orders.map((order) => {
+        return {
+          訂單編號: formatOrder(order).id,
+          顧客姓名: formatOrder(order).user.name,
+          聯絡電話: formatOrder(order).user.tel,
+          寄送地址: formatOrder(order).user.address,
+          付款方式: formatOrder(order).user.payment,
+          訂單金額: formatOrder(order).totalFormatted,
+          付款狀態: formatOrder(order).paidText,
+          建立時間: `${formatOrder(order).createdAt} (${formatOrder(order).daysAgo} 天前)`,
+        };
+      });
 }
 
 module.exports = {

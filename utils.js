@@ -50,7 +50,7 @@ function getDaysAgo(timestamp) {
   // 2. 用 dayjs.unix(timestamp) 取得日期
   // 3. 用 .diff() 計算天數差異
   let DaysAgo = dayjs().diff(dayjs.unix(timestamp), "day");
-  return Number(DaysAgo) > 1 ? `${Number(DaysAgo)}天前` : "今天";
+  return Number(DaysAgo) !== 0 ? `${Number(DaysAgo)}天前` : "今天";
 }
 
 /**
@@ -71,7 +71,9 @@ function validateOrderUser(data) {
   const isTelValid = /^09\d{8}$/.test(data.tel);
   const isEmailValid = /^\S+@\S+\.\S+$/.test(data.email);
   const isAddressValid = /\S/.test(data.address);
-  const isPaymentValid = /ATM|Credit Card|Apple Pay/.test(data.payment);
+  const isPaymentValid = ["ATM", "Credit Card", "Apple Pay"].includes(
+    data.payment,
+  );
 
   if (
     isNameValid &&
@@ -126,7 +128,7 @@ function validateCartQuantity(quantity) {
     if (typeof quantity !== "number" || !Number.isInteger(quantity)) {
       errorAry.push("請檢查數量型別是否為數字，或是否為整數");
     }
-    if (quantity >= 1 || quantity <= 99) {
+    if (quantity < 1 || quantity > 99) {
       errorAry.push("請檢查數量是否在1~99之間");
     }
     return { isValid: false, error: errorAry.join(",") };
