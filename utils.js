@@ -125,7 +125,7 @@ function validateCartQuantity(quantity) {
     return { isValid: true, error: "" };
   } else {
     let errorAry = [];
-    if (typeof quantity !== "number" || !Number.isInteger(quantity)) {
+    if (!Number.isInteger(quantity)) {
       errorAry.push("請檢查數量型別是否為數字，或是否為整數");
     }
     if (quantity < 1 || quantity > 99) {
