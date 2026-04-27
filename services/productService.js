@@ -95,14 +95,17 @@ function displayProducts(products) {
   //    原價：NT$ 1,000
   //    售價：NT$ 800 (8折)
   // ----------------------------------------
-  return products.forEach((product) => {
-    return {
-      產品名稱: product.title,
-      分類: product.category,
-      原價: `NT$${formatCurrency(product.origin_price)}`,
-      售價: `NT$${product.price} (${getDiscountRate(product)})`,
-    };
-  });
+
+  return products
+    .map((product, index) => {
+      const title = product.title;
+      const category = product.category;
+      const originPrice = formatCurrency(product.origin_price);
+      const soldPrice = formatCurrency(product.price);
+      const discount = getDiscountRate(product);
+      return `${index}\n產品名稱: ${title}\n分類: ${category}\n原價: ${originPrice}\n售價: ${soldPrice} (${discount})`;
+    })
+    .join("\n");
 }
 
 module.exports = {

@@ -83,7 +83,7 @@ async function updateCartItem(cartId, quantity) {
         quantity,
       },
     });
-    return response;
+    return response.data;
   } catch (error) {
     console.error("更新購物車失敗", error.message);
   }
@@ -99,7 +99,7 @@ async function deleteCartItem(cartId) {
   try {
     const delCartItemUrl = `${BASE_URL}/api/livejs/v1/customer/${API_PATH}/carts/${cartId}`;
     const response = await axios.delete(delCartItemUrl);
-    return response;
+    return response.data;
   } catch (error) {
     console.error("刪除購物車商品失敗", error.message);
   }
@@ -183,16 +183,21 @@ async function fetchOrders() {
 async function updateOrderStatus(orderId, isPaid) {
   // 請實作此函式
   try {
-    const adminGetOrderUrl = `${BASE_URL}/api/livejs/v1/admin/${API_PATH}/orders`;
+    const adminPutOrderUrl = `${BASE_URL}/api/livejs/v1/admin/${API_PATH}/orders`;
     const data = {
       id: orderId,
       paid: isPaid,
     };
-    const response = await axios.get(adminGetOrderUrl, {
-      headers: headers,
-      data: data,
-    });
-    return response;
+    const response = await axios.put(
+      adminPutOrderUrl,
+      {
+        data: data,
+      },
+      {
+        headers: headers,
+      },
+    );
+    return response.data;
   } catch (error) {
     console.error("更新訂單狀態失敗", error.message);
   }

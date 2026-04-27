@@ -12,7 +12,7 @@ const dayjs = require("dayjs");
 function getDiscountRate(product) {
   // 請實作此函式
   let discount = Math.round((product.price / product.origin_price) * 10);
-  return discount % 10 === 0 ? `${discount / 10}折` : `${discount}折`;
+  return `${discount}折`;
 }
 
 /**
@@ -23,8 +23,7 @@ function getDiscountRate(product) {
 function getAllCategories(products) {
   // 請實作此函式
   let categoryArray = [];
-  products.forEach((product) => categoryArray.push(product.category));
-  return [...new Set(categoryArray)];
+  return [...new Set(products.map((product) => product.category))];
 }
 
 /**
